@@ -1,5 +1,5 @@
 job "nginx" {
-   datacenters = ["eu-west-2","ukwest"]
+   datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
   type = "service"
 
   group "withvault" {
@@ -70,7 +70,7 @@ job "nginx" {
            
             <br />
 	          <br />
-            {{ with secret "pki/issue/consul-service" "common_name=nginx.service.consul" "ttl=30m" }}
+            {{ with secret "pki/issue/consul-service" "common_name=nginx.service.consul" "ttl=90m" }}
             {{ .Data.certificate }}
             <br />
             <br />

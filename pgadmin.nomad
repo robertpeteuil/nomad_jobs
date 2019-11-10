@@ -1,48 +1,50 @@
-# For full documentation and examples, see
-#     https://www.nomadproject.io/docs/job-specification/job.html
-job "pipelines" {
-  datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1"]
+#To Configure postgres
+# postgres.service.consul:5432/postgres?sslmode=disable
+# username="root"     password="rootpassword"
+
+
+job "pgadmin4" {
+  datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1"]
   type = "service"
 
-  
-  group "ansible" {
+  group "pgadmin4" {
     count = 1
 
-    task "rundeck" {
+    task "pgadmin4" {
       driver = "docker"
       config {
-        image = "jordan/rundeck"
-
+        image = "dpage/pgadmin4"
+        network_mode = "host"
         port_map {
-          http = 4440
+          db = 5050
         }
 
-       
-         
       }
       env {
-       "EXTERNAL_SERVER_URL"="http://${NOMAD_ADDR_http}"
-       "RUNDECK_ADMIN_PASSWORD"="Welcome1"
+        PGADMIN_DEFAULT_EMAIL="youremail@yourdomain.com",
+        PGADMIN_DEFAULT_PASSWORD="yoursecurepassword",
+        PGADMIN_LISTEN_PORT="5050"
       }
 
-      logs {
+logs {
         max_files     = 5
         max_file_size = 15
       }
+
       resources {
         cpu = 1000
-        memory = 2048
+        memory = 1024
         network {
           mbits = 10
-          port  "http"  {
-             
+          port  "ui"  {
+            static = 5050
           }
         }
       }
       service {
-        name = "rundeck"
-        tags = ["global", "urlprefix-/rundeck"]
-        port = "http"
+        name = "pgadmin"
+        tags = [ "urlprefix-/pgadmin", "strip=/pgadmin"]
+        port = "ui"
 
         check {
           name     = "alive"
@@ -61,7 +63,7 @@ job "pipelines" {
 
   }
 
-   
+
 
   update {
     max_parallel = 1

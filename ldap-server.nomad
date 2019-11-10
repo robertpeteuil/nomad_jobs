@@ -1,45 +1,43 @@
-# For full documentation and examples, see
-#     https://www.nomadproject.io/docs/job-specification/job.html
-job "meanstack" {
-  datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1"]
+job "LDAP" {
+  datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1"]
   type = "service"
-  
-  group "nodejs" {
-    count = 3
 
-    task "backend" {
+  group "openldap" {
+    count = 1
+
+    task "ldap-service" {
       driver = "docker"
       config {
-        image = "phatbrasil/meanstack_backend"
-args = [
-    "--env", "MONGODB_URL=",
-    "mongodb.service.consul",
-    "--env", "MONGODB_PORT=",
-    "27017",
-  ]
+        image = "osixia/openldap"
+        network_mode = "host"
         port_map {
-          http = 5000
+          LDAP = 389
         }
+
+      }
+      env {
+        LDAP_TLS = "false"
       }
 
       logs {
         max_files     = 5
         max_file_size = 15
       }
+
       resources {
         cpu = 1000
         memory = 1024
         network {
           mbits = 10
-          port  "http"  {
-            
+          port  "LDAP"  {
+            static = 389
           }
         }
       }
       service {
-        name = "backend"
-        tags = ["urlprefix-/backend strip=/backend"]
-        port = "http"
+        name = "ldap-service"
+        tags = ["urlprefix-/ldap-service strip=/ldap-service"]
+        port = "LDAP"
 
         check {
           name     = "alive"
@@ -57,8 +55,6 @@ args = [
     }
 
   }
-
-  
 
   update {
     max_parallel = 1
