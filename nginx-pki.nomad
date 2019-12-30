@@ -1,5 +1,5 @@
 job "nginx" {
-   datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
+  datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
   type = "service"
 
   group "withvault" {
@@ -86,12 +86,8 @@ job "nginx" {
         memory = 128 # 128 MB
         network {
           mbits = 10
-          port "http" {
-            
-          }
-          port "https" {
-            
-          }
+          port "http" {}
+          port "https" {}
         }
       }
 
@@ -109,6 +105,5 @@ job "nginx" {
         }
       }
     }
-
   }
 }

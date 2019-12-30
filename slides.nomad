@@ -21,16 +21,16 @@ job "slides" {
         max_files     = 5
         max_file_size = 15
       }
+      
       resources {
         cpu = 1000
         memory = 1024
         network {
           mbits = 10
-          port  "http"  {
-            
-          }
+          port  "http"  {}
         }
       }
+      
       service {
         name = "slides"
         tags = ["urlprefix-/slides strip=/slides"]
@@ -44,17 +44,15 @@ job "slides" {
         }
       }
     }
+    
     restart {
       attempts = 10
       interval = "5m"
       delay = "25s"
       mode = "delay"
     }
-
   }
 
-  
-  
   update {
     max_parallel = 1
     min_healthy_time = "5s"

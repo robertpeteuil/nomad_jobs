@@ -21,7 +21,7 @@
 # Good luck !
 
 job "vault_ssh_helper-${nomad_node}" {
- datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
+  datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
   type = "batch"
 
   task "vault_ssh_helper_install" {
@@ -29,6 +29,7 @@ job "vault_ssh_helper-${nomad_node}" {
       attribute = "$${meta.name}"
       value     = "${nomad_node}"
     }
+    
     driver = "raw_exec"
 
     template {
@@ -94,8 +95,8 @@ EOH
       command = "bash"
       args    = ["script.sh"]
     }
+    
   }
-
 }
 
 

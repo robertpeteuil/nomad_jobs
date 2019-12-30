@@ -9,6 +9,7 @@ job "presentation" {
 
     task "hashibo" {
       driver = "docker"
+      
       config {
         image = "boeroboy/hashibo:2019"
 
@@ -21,16 +22,16 @@ job "presentation" {
         max_files     = 5
         max_file_size = 15
       }
+      
       resources {
         cpu = 1000
         memory = 1024
         network {
           mbits = 10
-          port  "http"  {
-            
-          }
+          port  "http"  {}
         }
       }
+      
       service {
         name = "hashibo"
         tags = ["urlprefix-/hashibo strip=/hashibo"]
@@ -44,17 +45,15 @@ job "presentation" {
         }
       }
     }
+    
     restart {
       attempts = 10
       interval = "5m"
       delay = "25s"
       mode = "delay"
     }
-
   }
 
-  
-  
   update {
     max_parallel = 1
     min_healthy_time = "5s"

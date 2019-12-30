@@ -1,9 +1,11 @@
 job "chat2" {
- datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1","dev-eu-west-2", "DC1"]
-
+ 
+  datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1","dev-eu-west-2", "DC1"]
   type = "service"
+  
   group "anon_chat" {
     count = 1
+    
     network {
       mode = "bridge"
       port "http" {
@@ -11,9 +13,10 @@ job "chat2" {
         to     = 5000
       }
     }  
+    
     task "anon_chat_server" {
       driver = "raw_exec"
-       template {
+      template {
         data = <<EOH
         #!/bin/bash
         cd local/repo/1/
@@ -22,23 +25,28 @@ job "chat2" {
         destination = "local/run.sh"
         perms = "755"
       }
+      
       artifact {
         source   = "git::https://github.com/GuyBarros/anonymouse-realtime-chat-app"
         destination = "local/repo/1/"
       }
-      env{
+      
+      env {
         "MONGODB_SERVER" = "127.0.0.1"
         "MONGODB_PORT" =   27017
       }
+      
       config {
         command = "bash"
         args    = ["local/run.sh"]
       }
     }
+    
     service {
       name = "chat"
       tags = ["chat"]
       port = "http"
+      
       connect {
         sidecar_service {
           proxy {

@@ -1,6 +1,7 @@
 
 job "Consul-Service-Gateways" {
- datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
+  
+  datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
   type = "system"
 
   task "consul-gateway" {
@@ -28,7 +29,6 @@ EOH
       args    = ["script.sh"]
     }
   }
-
 }
 
 

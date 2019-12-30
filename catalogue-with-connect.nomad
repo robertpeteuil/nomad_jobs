@@ -1,4 +1,5 @@
 job "catalogue-with-connect" {
+  
   datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1"]
 
   constraint {
@@ -6,17 +7,15 @@ job "catalogue-with-connect" {
     value = "linux"
   }
 
-/*
-  constraint {
-    operator = "distinct_hosts"
-    value = "true"
-  }
-*/
+  # constraint {
+  #   operator = "distinct_hosts"
+  #   value = "true"
+  # }
+
   update {
     stagger = "10s"
     max_parallel = 1
   }
-
 
   # - catalogue - #
   group "catalogue" {
@@ -98,7 +97,6 @@ EOH
 
         destination = "local/${NOMAD_META_proxy_name}-proxy.json"
       }
-
 
       resources {
         network {

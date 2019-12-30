@@ -1,4 +1,5 @@
 job "catalogue-middleware" {
+  
   datacenters = ["eu-west-2","ukwest","sa-east-1","ap-northeast-1","dc1"]
 
   constraint {
@@ -6,17 +7,15 @@ job "catalogue-middleware" {
     value = "linux"
   }
 
-/*
-  constraint {
-    operator = "distinct_hosts"
-    value = "true"
-  }
-*/
+  # constraint {
+  #   operator = "distinct_hosts"
+  #   value = "true"
+  # }
+
   update {
     stagger = "10s"
     max_parallel = 1
   }
-
 
   # - catalogue - #
   group "catalogue" {
@@ -55,9 +54,7 @@ job "catalogue-middleware" {
         memory = 128 # 32MB
         network {
           mbits = 10
-          port "http" {
-            
-          }
+          port "http" {}
         }
       }
     } # - end app - #
@@ -99,7 +96,6 @@ EOH
         destination = "local/${NOMAD_META_proxy_name}-proxy.json"
       }
 
-
       resources {
         network {
           port "proxy" {}
@@ -108,5 +104,4 @@ EOH
       }
     } # - end catalogue upstream proxy - #
   } # end catalogue group
-
 }

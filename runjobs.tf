@@ -2,14 +2,14 @@
 provider "nomad" {
   address = data.terraform_remote_state.demostack.outputs.Primary_Nomad
 }
+
 locals {
   fabio  = "${data.terraform_remote_state.demostack.outputs.Primary_Fabio}"
   workers = "${data.terraform_remote_state.demostack.outputs.nomad_tag_workers}"
   servers = "${data.terraform_remote_state.demostack.outputs.nomad_tag_servers}"
 }
 
-
-// Workspace Data
+# Workspace Data
 data "terraform_remote_state" "demostack" {
   backend = "remote"
 
@@ -19,7 +19,7 @@ data "terraform_remote_state" "demostack" {
     workspaces = {
       name = var.DEMOSTACK_WORKSPACE
     }
-  } //config
+  }  # config
 }
 
 # Register a job
@@ -31,57 +31,56 @@ resource "nomad_job" "hashibo" {
   jobspec = "${file("./hashibo.nomad")}"
 }
 
-/*
-resource "nomad_job" "consul-federation" {
-  jobspec = "${file("./consul-federation.nomad")}"
-}
-*/
-
+# resource "nomad_job" "consul-federation" {
+#   jobspec = "${file("./consul-federation.nomad")}"
+# }
 
 # resource "nomad_job" "nomad-federation" {
 #   jobspec = "${file("./nomad_federation.nomad")}"
 # }
-/*
-resource "nomad_job" "countapi" {
-  jobspec = "${file("./countapi.nomad")}"
-}
 
-resource "nomad_job" "countdashboard" {
-  jobspec = "${file("./countdashboard.nomad")}"
-}
+# resource "nomad_job" "countapi" {
+#   jobspec = "${file("./countapi.nomad")}"
+# }
 
-resource "nomad_job" "postgresSQL" {
-  jobspec = "${file("./postgresSQL.nomad")}"
-}
-resource "nomad_job" "postgresSQL_admin" {
-  jobspec = "${file("./pgadmin.nomad")}"
-}
+# resource "nomad_job" "countdashboard" {
+#   jobspec = "${file("./countdashboard.nomad")}"
+# }
 
-resource "nomad_job" "ldap-server" {
-  jobspec = "${file("./ldap-server.nomad")}"
-}
-resource "nomad_job" "phpldapadmin" {
-  jobspec = "${file("./phpldapadmin.nomad")}"
-}
-resource "nomad_job" "vaultupdater" {
-  jonspec = "${file("./vaultupdater.nomad")}"
-}
-*/
+# resource "nomad_job" "postgresSQL" {
+#   jobspec = "${file("./postgresSQL.nomad")}"
+# }
+# resource "nomad_job" "postgresSQL_admin" {
+#   jobspec = "${file("./pgadmin.nomad")}"
+# }
 
- data "template_file" "vault-ssh-helper" {
-   count = length(local.workers)
-   template = "${file("./vault-ssh-helper.nomad.tpl")}"
-      vars = {
-     nomad_node = local.workers[count.index]
-   }
- }
+# resource "nomad_job" "ldap-server" {
+#   jobspec = "${file("./ldap-server.nomad")}"
+# }
+# resource "nomad_job" "phpldapadmin" {
+#   jobspec = "${file("./phpldapadmin.nomad")}"
+# }
+# resource "nomad_job" "vaultupdater" {
+#   jonspec = "${file("./vaultupdater.nomad")}"
+# }
 
- resource "nomad_job" "vault-ssh-helper" {
-  count = length(local.workers)
-   jobspec = "${element(data.template_file.vault-ssh-helper.*.rendered, count.index)}"
- } 
+### Vault SSH Helper
 
+# VERSION 1
+# data "template_file" "vault-ssh-helper" {
+#   count = length(local.workers)
+#   template = "${file("./vault-ssh-helper.nomad.tpl")}"
+#   
+#   vars = {
+#     nomad_node = local.workers[count.index]
+#   }
+# }
+# resource "nomad_job" "vault-ssh-helper" {
+#   count = length(local.workers)
+#   jobspec = "${element(data.template_file.vault-ssh-helper.*.rendered, count.index)}"
+# } 
 
+# VERSION 2
 # data "template_file" "vault-ssh-helper#   template = ${file#   vars = {
 #     nomad_node = "ric-lnd-stack-server-1"
 #   }
@@ -90,7 +89,6 @@ resource "nomad_job" "vaultupdater" {
 #   jobspec = "${data.template_file.vault-ssh-ca.rendered}"
 # }
 
-/*
 ### Monitoring Stack (may need to be applied twice)
 data "template_file" "prometheus_monitoring" {
   template = "${file("./prometheus.nomad.tpl")}"
@@ -131,4 +129,3 @@ resource "grafana_dashboard" "Vault" {
 #   password      = "bar"
 #   database_name = "mydb"
 # }
-*/

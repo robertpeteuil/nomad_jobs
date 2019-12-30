@@ -9,14 +9,15 @@ job "meanstack" {
 
     task "backend" {
       driver = "docker"
+      
       config {
         image = "phatbrasil/meanstack_backend"
-args = [
-    "--env", "MONGODB_URL=",
-    "mongodb.service.consul",
-    "--env", "MONGODB_PORT=",
-    "27017",
-  ]
+        args = [
+            "--env", "MONGODB_URL=",
+            "mongodb.service.consul",
+            "--env", "MONGODB_PORT=",
+            "27017",
+          ]
         port_map {
           http = 5000
         }
@@ -26,16 +27,17 @@ args = [
         max_files     = 5
         max_file_size = 15
       }
+      
       resources {
         cpu = 1000
         memory = 1024
         network {
           mbits = 10
           port  "http"  {
-            
           }
         }
       }
+      
       service {
         name = "backend"
         tags = ["urlprefix-/backend strip=/backend"]
@@ -49,6 +51,7 @@ args = [
         }
       }
     }
+    
     restart {
       attempts = 10
       interval = "5m"
@@ -57,8 +60,6 @@ args = [
     }
 
   }
-
-  
 
   update {
     max_parallel = 1

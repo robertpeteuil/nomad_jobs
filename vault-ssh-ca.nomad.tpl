@@ -7,6 +7,7 @@
 job "vault_ssh_ca-${nomad_node}" {
   datacenters = ["eu-west-2","eu-west-1","ukwest","sa-east-1","ap-northeast-1","dc1","europe-west3-dc"]
   type = "batch"
+  
   vault {
     policies = ["superuser"]
     change_mode   = "restart"
@@ -17,6 +18,7 @@ job "vault_ssh_ca-${nomad_node}" {
       attribute = "$${meta.name}"
       value     = "${nomad_node}"
     }
+    
     driver = "raw_exec"
 
     template {
@@ -72,8 +74,8 @@ EOH
       command = "bash"
       args    = ["script.sh"]
     }
+    
   }
-
 }
 
 

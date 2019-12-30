@@ -45,6 +45,7 @@ job "LDAP" {
           }
         }
       }
+      
       service {
         name = "ldap-service"
         tags = ["urlprefix-/ldap-service strip=/ldap-service"]
@@ -57,6 +58,7 @@ job "LDAP" {
           timeout  = "2s"
         }
       }
+      
       template {
         change_mode = "noop"
         perms = "755"

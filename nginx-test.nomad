@@ -51,12 +51,8 @@ job "nginx" {
         memory = 128 # 128 MB
         network {
           mbits = 10
-          port "http" {
-              
-          }
-          port "https" {
-            
-          }
+          port "http" {}
+          port "https" {}
         }
       }
 
