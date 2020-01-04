@@ -1,6 +1,7 @@
 # Control Groups Demo
 
 ## Configure LDAP
+
 * login to: http://fabio.eu-guystack.hashidemos.io:9999/phpldapadmin-server/
 * user: cn=admin,dc=example,dc=org
 password: admin
@@ -47,6 +48,7 @@ vault kv put kv/cgtest example=value
 ```
 
 Next you can login with one user to request the token:
+
 ``` bash
 vault login -method=ldap username='ricardo'
 # ensure the correct identity_policies are applied. (or login again)
