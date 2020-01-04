@@ -29,10 +29,8 @@ job "hashi-ui" {
         NOMAD_ENABLE = 1
         NOMAD_ADDR   = "http://http.nomad.service.consul:4646"
 
-        /**
-        CONSUL_ENABLE = 1
-        CONSUL_ADDR   = "consul.service.consul:8500"
-        */
+        # CONSUL_ENABLE = 1
+        # CONSUL_ADDR   = "consul.service.consul:8500"
       }
 
       resources {

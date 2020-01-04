@@ -66,7 +66,6 @@ resource "nomad_job" "hashibo" {
 
 ### Vault SSH Helper
 
-# VERSION 1
 # data "template_file" "vault-ssh-helper" {
 #   count = length(local.workers)
 #   template = "${file("./vault-ssh-helper.nomad.tpl")}"
@@ -80,8 +79,12 @@ resource "nomad_job" "hashibo" {
 #   jobspec = "${element(data.template_file.vault-ssh-helper.*.rendered, count.index)}"
 # } 
 
-# VERSION 2
-# data "template_file" "vault-ssh-helper#   template = ${file#   vars = {
+### Vault SSH CA
+
+# data "template_file" "vault-ssh-ca" {
+#   template = "${file("./vault-ssh-ca.nomad.tpl")}"
+#
+#   vars = {
 #     nomad_node = "ric-lnd-stack-server-1"
 #   }
 # }
