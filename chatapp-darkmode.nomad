@@ -20,7 +20,7 @@ job "chat-app" {
     task "chat-app" {
       driver = "docker"
       config {
-        image = "lhaig/anon-app:light-0.03"
+        image = "lhaig/anon-app:dark-0.03"
       }
       env {
         "MONGODB_SERVER" = "127.0.0.1"
